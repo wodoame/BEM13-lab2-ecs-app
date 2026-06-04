@@ -33,13 +33,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Upload deploy bundle to S3
-        env:
-          ARTIFACT_BUCKET: ${{ secrets.ARTIFACT_BUCKET }}
-        run: |
-          zip deploy-bundle.zip appspec.yaml taskdef.json
-          aws s3 cp deploy-bundle.zip s3://$ARTIFACT_BUCKET/deploy/deploy-bundle.zip
-
       - name: Build, tag, and push image to ECR
         env:
           IMAGE_NAME: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}
